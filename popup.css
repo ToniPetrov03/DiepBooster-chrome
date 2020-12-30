@@ -1,0 +1,27 @@
+#predator {
+    display: flex;
+}
+
+.refresh-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+#predator-refresh {
+    height: 1rem;
+    width: auto;
+}
+
+div.header {
+    display: flex;
+    align-items: center;
+    font-family: 'Trebuchet MS', sans-serif;
+}
+
+span {
+    font-weight: bold;
+}
+
+body {
+    width: 154px;
+}
