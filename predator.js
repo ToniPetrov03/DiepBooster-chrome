@@ -12,34 +12,7 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
-const inputContainer = document.getElementById('textInputContainer');
-const observerConfig = { attributes: true };
-
-function gameStartObserver() {
-  const observer = new MutationObserver(([mutation], observer) => {
-    if (mutation.target?.style.display === 'none') {
-      document.addEventListener('keyup', onRUp);
-      observer.disconnect();
-      gameEndObserver();
-    }
-  });
-
-  observer.observe(inputContainer, observerConfig);
-}
-
-function gameEndObserver() {
-  const observer = new MutationObserver(([mutation], observer) => {
-    if (mutation.target?.style.display === 'block') {
-      document.removeEventListener('keyup', onRUp);
-      observer.disconnect();
-      gameStartObserver();
-    }
-  });
-
-  observer.observe(inputContainer, observerConfig);
-}
-
-function onRUp(e) {
+const onRUp = (e) => {
   if (e.code !== 'KeyR') return;
 
   const fire = (t, w) => {
@@ -54,4 +27,4 @@ function onRUp(e) {
   setTimeout(pressE, 2000);
 }
 
-gameStartObserver();
+document.addEventListener('keyup', onRUp);

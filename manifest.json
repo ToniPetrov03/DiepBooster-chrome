@@ -1,26 +1,13 @@
 {
   "name": "DiepBooster",
   "version": "1.0",
-  "description": "Auto stack the Predator's bullets!",
-  "permissions": [
-    "declarativeContent",
-    "activeTab",
-    "https://diep.io/*"
-  ],
-  "background": {
-    "scripts": [
-      "background.js"
-    ]
-  },
-  "page_action": {
-    "default_popup": "popup.html",
-    "default_icon": {
-      "16": "images/booster16.png",
-      "32": "images/booster32.png",
-      "48": "images/booster48.png",
-      "128": "images/booster128.png"
+  "description": "Press 'R' to auto stack the Predator's bullets!",
+  "content_scripts": [
+    {
+      "matches": ["https://diep.io/*"],
+      "js": ["predator.js"]
     }
-  },
+  ],
   "icons": {
     "16": "images/booster16.png",
     "32": "images/booster32.png",
