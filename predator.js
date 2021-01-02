@@ -1,5 +1,3 @@
-let smartFireOn = false;
-
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
     which: keyCode,
@@ -14,17 +12,13 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
-const canvas = document.getElementById('canvas');
-
 const inputContainer = document.getElementById('textInputContainer');
 const observerConfig = { attributes: true };
-
-const onEPress = ({ code }) => code === 'KeyE' && (smartFireOn = !smartFireOn);
 
 function gameStartObserver() {
   const observer = new MutationObserver(([mutation], observer) => {
     if (mutation.target?.style.display === 'none') {
-      initListeners();
+      document.addEventListener('keyup', onRUp);
       observer.disconnect();
       gameEndObserver();
     }
@@ -36,7 +30,7 @@ function gameStartObserver() {
 function gameEndObserver() {
   const observer = new MutationObserver(([mutation], observer) => {
     if (mutation.target?.style.display === 'block') {
-      removeListeners();
+      document.removeEventListener('keyup', onRUp);
       observer.disconnect();
       gameStartObserver();
     }
@@ -45,22 +39,8 @@ function gameEndObserver() {
   observer.observe(inputContainer, observerConfig);
 }
 
-function initListeners() {
-  console.log('init listeners')
-
-  document.addEventListener('keyup', onEPress);
-  canvas.addEventListener('mouseup', onMiddleClick);
-}
-
-function onMiddleClick(e) {
-  if (e.button !== 1) return;
-
-  smartFireOn = !smartFireOn;
-
-  if (!smartFireOn) {
-    pressE();
-    return;
-  }
+function onRUp(e) {
+  if (e.code !== 'KeyR') return;
 
   const fire = (t, w) => {
     setTimeout(spaceDown, t * 1000);
@@ -74,12 +54,4 @@ function onMiddleClick(e) {
   setTimeout(pressE, 2000);
 }
 
-function removeListeners() {
-  console.log('remove listeners')
-
-  document.removeEventListener('keyup', onEPress);
-  canvas.removeEventListener('mouseup', onMiddleClick);
-}
-
-console.log('start program')
 gameStartObserver();
