@@ -1,11 +1,11 @@
 {
   "name": "DiepBooster",
   "version": "1.0",
-  "description": "Press 'R' to auto stack the Predator's bullets!",
+  "description": "Auto stack the bullets of Predator and Octo tank!",
   "content_scripts": [
     {
       "matches": ["https://diep.io/*"],
-      "js": ["predator.js"]
+      "js": ["stackingBullets.js"]
     }
   ],
   "icons": {
