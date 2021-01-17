@@ -19,15 +19,31 @@
     </tr>
     <tr>
       <th>Predator</th>
-      <th>7<!--<input maxlength="1" pattern="[0-7]" name="reload"/>--></th>
-      <th><input maxlength="1" name="key" class="margin-left"/></th>
+      <th>
+        <select name="predator-reload">
+          <option value="7">7</option>
+        </select>
+      </th>
+      <th><input maxlength="1" name="predator-key"/></th>
     </tr>
     <tr>
       <th>OctoTank</th>
-      <th><input maxlength="1" pattern="[0-7]" name="reload"/></th>
-      <th><input maxlength="1" name="key" class="margin-left"/></th>
+      <th>
+        <select name="octoTank-reload">
+          <option value="0">0</option>
+          <option value="1">1</option>
+          <option value="2">2</option>
+          <option value="3">3</option>
+          <option value="4">4</option>
+          <option value="5">5</option>
+          <option value="6">6</option>
+          <option value="7">7</option>
+        </select>
+      </th>
+      <th><input maxlength="1" name="octoTank-key"/></th>
     </tr>
   </table>
 </div>
+<script src="popup.js"></script>
 </body>
 </html>
