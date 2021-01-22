@@ -76,12 +76,12 @@ function initStacking({ predator, octoTank }) {
     mouseY = e.clientY;
   };
 
-  const keys = {
-    [predator.key]: predatorStacking,
-    [octoTank.key]: octoTankStacking,
+  const keyCodes = {
+    [predator.keyCode]: predatorStacking,
+    [octoTank.keyCode]: octoTankStacking,
   };
 
-  const onKeyUp = ({ key }) => key in keys && keys[key]();
+  const onKeyUp = ({ code }) => code in keyCodes && keyCodes[code]();
 
   canvas.addEventListener('mousemove', onMouseMove);
   document.addEventListener('keyup', onKeyUp);

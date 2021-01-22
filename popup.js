@@ -4,16 +4,21 @@ const reloadSelects = document.getElementsByTagName('select');
 const [predatorKeyInput, octoTankKeyInput] = keyInputs;
 const [predatorReloadSelect, octoTankReloadSelect] = reloadSelects;
 
+const responseWidth = el => el.value.length + 1 + 'ch';
+
 chrome.storage.sync.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
-  predatorKeyInput.value = predator.key;
+  predatorKeyInput.value = predator.keyCode;
   predatorReloadSelect.value = predator.reload;
-  octoTankKeyInput.value = octoTank.key;
+  octoTankKeyInput.value = octoTank.keyCode;
   octoTankReloadSelect.value = octoTank.reload;
+
+  predatorKeyInput.style.width = responseWidth(predatorKeyInput);
+  octoTankKeyInput.style.width = responseWidth(predatorKeyInput);
 });
 
 const onChange = ({ target }) => {
-  const { name, value } = target;
-  const [tank, prop] = name.split('-');
+  const { id, value } = target;
+  const [tank, prop] = id.split('-');
 
   chrome.storage.sync.get(tank, (result) => {
     chrome.storage.sync.set({
@@ -25,6 +30,18 @@ const onChange = ({ target }) => {
   });
 }
 
-[...keyInputs].forEach(input => input.addEventListener('input', onChange));
+[...keyInputs].forEach(input => {
+  const onKeyDown = (e) => {
+    e.preventDefault();
+
+    input.value = e.code;
+    input.style.width = responseWidth(input);
+
+    onChange(e);
+  };
+
+  input.addEventListener('focusin', () => document.addEventListener('keydown', onKeyDown));
+  input.addEventListener('focusout', () => document.removeEventListener('keydown', onKeyDown));
+});
 
 [...reloadSelects].forEach(select => select.addEventListener('change', onChange));

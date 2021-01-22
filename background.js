@@ -9,11 +9,11 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.sync.set({
     predator: {
       reload: 7,
-      key: 'r',
+      keyCode: 'KeyR',
     },
     octoTank: {
       reload: 7,
-      key: 'v',
+      keyCode: 'KeyV',
     },
   });
 });
