@@ -79,7 +79,7 @@ const initStacking = ({ predator, octoTank }) => {
   document.addEventListener('keyup', onKeyUp);
 };
 
-const init = () => chrome.storage.sync.get(['predator', 'octoTank'], initStacking);
+const init = () => chrome.storage.local.get(['predator', 'octoTank'], initStacking);
 
 chrome.storage.onChanged.addListener(() => {
   clearInterval(interval);

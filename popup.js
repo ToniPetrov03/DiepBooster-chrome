@@ -4,39 +4,43 @@ const reloadSelects = document.getElementsByTagName('select');
 const [predatorKeyInput, octoTankKeyInput] = keyInputs;
 const [predatorReloadSelect, octoTankReloadSelect] = reloadSelects;
 
-const responseWidth = el => el.value.length + 1 + 'ch';
+const responseInputsWidth = () => {
+  const width = Math.max(predatorKeyInput.value.length, octoTankKeyInput.value.length) + 1 + 'ch';
 
-chrome.storage.sync.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
+  predatorKeyInput.style.width = width;
+  octoTankKeyInput.style.width = width;
+};
+
+chrome.storage.local.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
   predatorKeyInput.value = predator.keyCode;
   predatorReloadSelect.value = predator.reload;
   octoTankKeyInput.value = octoTank.keyCode;
   octoTankReloadSelect.value = octoTank.reload;
 
-  predatorKeyInput.style.width = responseWidth(predatorKeyInput);
-  octoTankKeyInput.style.width = responseWidth(predatorKeyInput);
+  responseInputsWidth();
 });
 
 const onChange = ({ target }) => {
   const { id, value } = target;
   const [tank, prop] = id.split('-');
 
-  chrome.storage.sync.get(tank, (result) => {
-    chrome.storage.sync.set({
+  chrome.storage.local.get(tank, (result) => {
+    chrome.storage.local.set({
       [tank]: {
         ...result[tank],
         [prop]: value,
       },
     });
   });
-}
+};
 
 [...keyInputs].forEach(input => {
   input.addEventListener('keydown', (e) => {
     e.preventDefault();
 
     input.value = e.code;
-    input.style.width = responseWidth(input);
 
+    responseInputsWidth();
     onChange(e);
   });
 });

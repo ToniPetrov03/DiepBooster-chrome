@@ -6,7 +6,7 @@ chrome.runtime.onInstalled.addListener(() => {
     }]);
   });
 
-  chrome.storage.sync.set({
+  chrome.storage.local.set({
     predator: {
       reload: 7,
       keyCode: 'KeyR',
