@@ -31,17 +31,14 @@ const onChange = ({ target }) => {
 }
 
 [...keyInputs].forEach(input => {
-  const onKeyDown = (e) => {
+  input.addEventListener('keydown', (e) => {
     e.preventDefault();
 
     input.value = e.code;
     input.style.width = responseWidth(input);
 
     onChange(e);
-  };
-
-  input.addEventListener('focusin', () => document.addEventListener('keydown', onKeyDown));
-  input.addEventListener('focusout', () => document.removeEventListener('keydown', onKeyDown));
+  });
 });
 
 [...reloadSelects].forEach(select => select.addEventListener('change', onChange));
