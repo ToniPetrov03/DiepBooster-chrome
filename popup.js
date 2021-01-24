@@ -13,9 +13,9 @@ const responseInputsWidth = () => {
 
 chrome.storage.local.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
   predatorKeyInput.value = predator.keyCode;
-  predatorReloadSelect.value = predator.reload;
+  predatorReloadSelect.value = predator.bulletReload;
   octoTankKeyInput.value = octoTank.keyCode;
-  octoTankReloadSelect.value = octoTank.reload;
+  octoTankReloadSelect.value = octoTank.bulletReload;
 
   responseInputsWidth();
 });

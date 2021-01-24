@@ -1,4 +1,5 @@
-let keyCodes = {};
+let tanksInfo;
+
 let mouseX = 0;
 let mouseY = 0;
 let interval = 0;
@@ -16,6 +17,9 @@ const initKeyEvent = (keyCode, ...events) => {
 
 const canvas = document.getElementById('canvas');
 
+const target = document.getElementById('a');
+const config = { attributes: true, attributeFilter: ['style'] };
+
 const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
@@ -28,7 +32,7 @@ const predatorStacking = () => {
   const fire = (t, w) => {
     setTimeout(spaceDown, t * 1000);
     setTimeout(spaceUp, t * 1000 + w);
-  }
+  };
 
   fire(0, 100);
   fire(0.75, 200);
@@ -37,7 +41,7 @@ const predatorStacking = () => {
   setTimeout(pressE, 2000);
 };
 
-const octoTankStacking = (reloadMs) => {
+const octoTankStacking = () => {
   isFire = !isFire;
 
   if (isFire) {
@@ -52,7 +56,7 @@ const octoTankStacking = (reloadMs) => {
       const clientY = sin45 * (diffX + diffY) + centerY;
 
       canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
-    }, reloadMs);
+    }, 300 - 20 * tanksInfo.octoTank.bulletReload);
   } else {
     clearInterval(interval);
   }
@@ -67,27 +71,37 @@ const onMouseMove = (e) => {
   mouseY = e.clientY;
 };
 
-const onKeyUp = ({ code }) => code in keyCodes && keyCodes[code]();
+const onKeyUp = ({ code }) => {
+  switch (code) {
+    case tanksInfo.predator.keyCode: predatorStacking(); break;
+    case tanksInfo.octoTank.keyCode: octoTankStacking(); break;
+  }
+};
 
-const initStacking = ({ predator, octoTank }) => {
-  keyCodes = {
-    [predator.keyCode]: predatorStacking,
-    [octoTank.keyCode]: () => octoTankStacking(300 - 20 * octoTank.reload),
-  };
-
+const initStacking = () => {
   canvas.addEventListener('mousemove', onMouseMove);
   document.addEventListener('keyup', onKeyUp);
 };
 
-const init = () => chrome.storage.local.get(['predator', 'octoTank'], initStacking);
-
-chrome.storage.onChanged.addListener(() => {
+const stopStacking = () => {
   clearInterval(interval);
-
   canvas.removeEventListener('mousemove', onMouseMove);
   document.removeEventListener('keyup', onKeyUp);
+};
 
-  init();
+const display = {
+  none: initStacking,
+  block: stopStacking,
+};
+
+new MutationObserver(([{ target }]) => display[target.style.display]()).observe(target, config);
+
+const getTanksInfo = () => chrome.storage.local.get(['predator', 'octoTank'], (r) => tanksInfo = r);
+
+chrome.storage.onChanged.addListener(() => {
+  stopStacking();
+  getTanksInfo();
+  initStacking();
 });
 
-init();
+getTanksInfo();
