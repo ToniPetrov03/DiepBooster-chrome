@@ -44,7 +44,9 @@ const predatorStacking = () => {
 const octoTankStacking = () => {
   isFire = !isFire;
 
-  if (isFire) {
+  pressE();
+
+  const artificialMouseMove = () => {
     interval = setInterval(() => {
       const centerX = window.innerWidth / 2;
       const centerY = window.innerHeight / 2;
@@ -57,11 +59,9 @@ const octoTankStacking = () => {
 
       canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
     }, 300 - 20 * tanksInfo.octoTank.bulletReload);
-  } else {
-    clearInterval(interval);
-  }
+  };
 
-  pressE();
+  isFire ? artificialMouseMove() : clearInterval(interval);
 };
 
 const onMouseMove = (e) => {
@@ -78,30 +78,22 @@ const onKeyUp = ({ code }) => {
   }
 };
 
-const initStacking = () => {
+const initListeners = () => {
   canvas.addEventListener('mousemove', onMouseMove);
   document.addEventListener('keyup', onKeyUp);
 };
 
-const stopStacking = () => {
-  clearInterval(interval);
+const removeListeners = () => {
   canvas.removeEventListener('mousemove', onMouseMove);
   document.removeEventListener('keyup', onKeyUp);
 };
 
-const display = {
-  none: initStacking,
-  block: stopStacking,
-};
+new MutationObserver(() => {
+  clearInterval(interval);
+  isFire = false;
 
-new MutationObserver(([{ target }]) => display[target.style.display]()).observe(target, config);
-
-const getTanksInfo = () => chrome.storage.local.get(['predator', 'octoTank'], (r) => tanksInfo = r);
-
-chrome.storage.onChanged.addListener(() => {
-  stopStacking();
-  getTanksInfo();
-  initStacking();
-});
-
-getTanksInfo();
+  switch (target.style.display) {
+    case 'none': initListeners(); break;
+    case 'block': removeListeners(); break;
+  }
+}).observe(target, config);

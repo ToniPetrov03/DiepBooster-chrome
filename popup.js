@@ -4,11 +4,10 @@ const reloadSelects = document.getElementsByTagName('select');
 const [predatorKeyInput, octoTankKeyInput] = keyInputs;
 const [predatorReloadSelect, octoTankReloadSelect] = reloadSelects;
 
-const responseInputsWidth = () => {
-  const width = Math.max(predatorKeyInput.value.length, octoTankKeyInput.value.length) + 1 + 'ch';
+const responseInputsWidth = (...elements) => {
+  const width = elements.reduce((acc, { value }) => value.length > acc ? value.length : acc, 0) + 1 + 'ch';
 
-  predatorKeyInput.style.width = width;
-  octoTankKeyInput.style.width = width;
+  elements.forEach(el => el.style.width = width);
 };
 
 chrome.storage.local.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
@@ -17,7 +16,7 @@ chrome.storage.local.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
   octoTankKeyInput.value = octoTank.keyCode;
   octoTankReloadSelect.value = octoTank.bulletReload;
 
-  responseInputsWidth();
+  responseInputsWidth(predatorKeyInput, octoTankKeyInput);
 });
 
 const onChange = ({ target }) => {
@@ -40,7 +39,7 @@ const onChange = ({ target }) => {
 
     input.value = e.code;
 
-    responseInputsWidth();
+    responseInputsWidth(predatorKeyInput, octoTankKeyInput);
     onChange(e);
   });
 });
