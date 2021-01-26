@@ -6,9 +6,9 @@ let isFire = false;
 const SIN_45_DEGREES = Math.sqrt(2) / 2;
 
 const canvas = document.getElementById('canvas');
-
 const target = document.getElementById('a');
 const config = { attributes: true, attributeFilter: ['style'] };
+const display = { none: 'addEventListener', block: 'removeEventListener' };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -76,22 +76,11 @@ const onKeyUp = ({ code }) => {
   }
 };
 
-const initListeners = () => {
-  canvas.addEventListener('mousemove', onMouseMove);
-  document.addEventListener('keyup', onKeyUp);
-};
-
-const removeListeners = () => {
-  canvas.removeEventListener('mousemove', onMouseMove);
-  document.removeEventListener('keyup', onKeyUp);
-};
-
 new MutationObserver(() => {
   clearInterval(interval);
   isFire = false;
 
-  switch (target.style.display) {
-    case 'none': initListeners(); break;
-    case 'block': removeListeners(); break;
-  }
+  document[display[target.style.display]]('keyup', onKeyUp);
 }).observe(target, config);
+
+canvas.addEventListener('mousemove', onMouseMove);
