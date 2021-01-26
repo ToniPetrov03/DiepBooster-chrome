@@ -8,8 +8,8 @@
         "https://diep.io/*"
       ],
       "js": [
-        "stackingBullets.js",
-        "chromeStorage.js"
+        "chromeStorage.js",
+        "stackingBullets.js"
       ]
     }
   ],

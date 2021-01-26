@@ -1,5 +1,3 @@
-let tanksInfo;
-
 let mouseX = 0;
 let mouseY = 0;
 let interval = 0;
