@@ -3,6 +3,13 @@ let mouseY = 0;
 let interval = 0;
 let isFire = false;
 
+const SIN_45_DEGREES = Math.sqrt(2) / 2;
+
+const canvas = document.getElementById('canvas');
+
+const target = document.getElementById('a');
+const config = { attributes: true, attributeFilter: ['style'] };
+
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
     which: keyCode,
@@ -13,16 +20,9 @@ const initKeyEvent = (keyCode, ...events) => {
   return () => events.forEach((event) => window.dispatchEvent(new KeyboardEvent(event, eventInitDict)));
 };
 
-const canvas = document.getElementById('canvas');
-
-const target = document.getElementById('a');
-const config = { attributes: true, attributeFilter: ['style'] };
-
 const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
-
-const sin45 = Math.sin(Math.PI / 4);
 
 // TODO Predator reload
 
@@ -52,8 +52,8 @@ const octoTankStacking = () => {
       const diffX = mouseX - centerX;
       const diffY = mouseY - centerY;
 
-      const clientX = sin45 * (diffX - diffY) + centerX;
-      const clientY = sin45 * (diffX + diffY) + centerY;
+      const clientX = SIN_45_DEGREES * (diffX - diffY) + centerX;
+      const clientY = SIN_45_DEGREES * (diffX + diffY) + centerY;
 
       canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
     }, 300 - 20 * tanksInfo.octoTank.bulletReload);
