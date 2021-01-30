@@ -1,22 +1,20 @@
-const keyInputs = document.getElementsByTagName('input');
-const reloadSelects = document.getElementsByTagName('select');
+const [...keyInputs] = document.getElementsByTagName('input');
+const [...reloadSelects] = document.getElementsByTagName('select');
 
-const [predatorKeyInput, octoTankKeyInput] = keyInputs;
-const [predatorReloadSelect, octoTankReloadSelect] = reloadSelects;
-
-const responseWidth = (...elements) => {
+const responseWidth = (elements) => {
   const width = elements.reduce((acc, el) => Math.max(el.value.length, acc), 0) + 1 + 'ch';
 
   elements.forEach(el => el.style.width = width);
 };
 
-chrome.storage.local.get(['predator', 'octoTank'], ({ predator, octoTank }) => {
-  predatorKeyInput.value = predator.keyCode;
-  predatorReloadSelect.value = predator.bulletReload;
-  octoTankKeyInput.value = octoTank.keyCode;
-  octoTankReloadSelect.value = octoTank.bulletReload;
+chrome.storage.local.get((result) => {
+  [...keyInputs, ...reloadSelects].forEach(el => {
+    const [tank, prop] = el.id.split('-');
 
-  responseWidth(predatorKeyInput, octoTankKeyInput);
+    el.value = result[tank][prop];
+  });
+
+  responseWidth(keyInputs);
 });
 
 const onChange = ({ target }) => {
@@ -30,15 +28,15 @@ const onChange = ({ target }) => {
   });
 };
 
-[...keyInputs].forEach(input => {
+keyInputs.forEach(input => {
   input.addEventListener('keydown', (e) => {
     e.preventDefault();
 
     input.value = e.code;
 
-    responseWidth(predatorKeyInput, octoTankKeyInput);
+    responseWidth(keyInputs);
     onChange(e);
   });
 });
 
-[...reloadSelects].forEach(select => select.addEventListener('change', onChange));
+reloadSelects.forEach(select => select.addEventListener('change', onChange));

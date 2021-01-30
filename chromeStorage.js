@@ -1,6 +1,6 @@
 let tanksInfo;
 
-const getTanksInfo = () => chrome.storage.local.get(['predator', 'octoTank'], (r) => tanksInfo = r);
+const getTanksInfo = () => chrome.storage.local.get((result) => tanksInfo = result);
 
 chrome.storage.onChanged.addListener(getTanksInfo);
 

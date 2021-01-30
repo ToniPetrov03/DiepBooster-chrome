@@ -8,7 +8,7 @@ const SIN_45_DEGREES = Math.sqrt(2) / 2;
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('a');
 const config = { attributes: true, attributeFilter: ['style'] };
-const display = { none: 'addEventListener', block: 'removeEventListener' };
+const operations = { none: 'addEventListener', block: 'removeEventListener' };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -77,10 +77,11 @@ const onKeyUp = ({ code }) => {
 };
 
 new MutationObserver(() => {
+  const operation = operations[target.style.display];
+
   clearInterval(interval);
   isFire = false;
 
-  document[display[target.style.display]]('keyup', onKeyUp);
+  document[operation]('keyup', onKeyUp);
+  canvas[operation]('mousemove', onMouseMove);
 }).observe(target, config);
-
-canvas.addEventListener('mousemove', onMouseMove);
