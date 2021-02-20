@@ -17,8 +17,8 @@ chrome.storage.local.get((result) => {
   responseWidth(keyInputs);
 });
 
-const onChange = ({ target }) => {
-  const { id, value } = target;
+const onChange = (e) => {
+  const { id, value } = e.target;
   const [tank, prop] = id.split('-');
 
   chrome.storage.local.get(tank, (result) => {

@@ -1,14 +1,10 @@
-let mouseX = 0;
-let mouseY = 0;
-let interval = 0;
-let isFire = false;
+let mouseX, mouseY, interval, isOctoTankStacking, isArtificialMouseMove;
 
 const SIN_45_DEGREES = Math.sqrt(2) / 2;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('a');
 const config = { attributes: true, attributeFilter: ['style'] };
-const operations = { none: 'addEventListener', block: 'removeEventListener' };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -24,8 +20,6 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
-// TODO Predator reload
-
 const predatorStacking = () => {
   const fire = (t, w) => {
     setTimeout(spaceDown, t * 1000);
@@ -40,48 +34,64 @@ const predatorStacking = () => {
 };
 
 const octoTankStacking = () => {
-  isFire = !isFire;
-
   pressE();
 
-  const artificialMouseMove = () => {
-    interval = setInterval(() => {
-      const centerX = window.innerWidth / 2;
-      const centerY = window.innerHeight / 2;
+  isOctoTankStacking = !isOctoTankStacking;
 
-      const diffX = mouseX - centerX;
-      const diffY = mouseY - centerY;
+  if (!isOctoTankStacking) return clearInterval(interval);
 
-      const clientX = SIN_45_DEGREES * (diffX - diffY) + centerX;
-      const clientY = SIN_45_DEGREES * (diffX + diffY) + centerY;
+  interval = setInterval(() => {
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
 
-      canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
-    }, 300 - 20 * tanksInfo.octoTank.bulletReload);
-  };
+    const diffX = mouseX - centerX;
+    const diffY = mouseY - centerY;
 
-  isFire ? artificialMouseMove() : clearInterval(interval);
+    const clientX = SIN_45_DEGREES * (diffX - diffY) + centerX;
+    const clientY = SIN_45_DEGREES * (diffX + diffY) + centerY;
+
+    isArtificialMouseMove = true;
+    canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
+    isArtificialMouseMove = false;
+  }, 300 - 20 * tanksInfo.octoTank.bulletReload);
 };
 
 const onMouseMove = (e) => {
-  //TODO Fix Bug
+  // TODO Improve mouse control
+  if (isOctoTankStacking && !isArtificialMouseMove) return e.stopPropagation();
 
   mouseX = e.clientX;
   mouseY = e.clientY;
 };
 
-const onKeyUp = ({ code }) => {
-  switch (code) {
+const onKeyUp = (e) => {
+  switch (e.code) {
     case tanksInfo.predator.keyCode: predatorStacking(); break;
     case tanksInfo.octoTank.keyCode: octoTankStacking(); break;
   }
 };
 
-new MutationObserver(() => {
-  const operation = operations[target.style.display];
+const start = () => {
+  mouseX = 0;
+  mouseY = 0;
+  interval = 0;
+  isOctoTankStacking = false;
+  isArtificialMouseMove = false;
 
+  document.addEventListener('keyup', onKeyUp);
+  document.addEventListener('mousemove', onMouseMove, true);
+};
+
+const stop = () => {
   clearInterval(interval);
-  isFire = false;
 
-  document[operation]('keyup', onKeyUp);
-  canvas[operation]('mousemove', onMouseMove);
-}).observe(target, config);
+  document.removeEventListener('keyup', onKeyUp);
+  document.removeEventListener('mousemove', onMouseMove, true);
+};
+
+const display = {
+  none: start,
+  block: stop,
+};
+
+new MutationObserver(() => display[target.style.display]()).observe(target, config);
