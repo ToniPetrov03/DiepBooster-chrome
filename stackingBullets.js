@@ -1,4 +1,4 @@
-let mouseX, mouseY, interval, isOctoTankStacking, isArtificialMouseMove;
+let mouseX, mouseY, interval, boolean, isOctoTankStacking, isArtificialMouseMove;
 
 const SIN_45_DEGREES = Math.sqrt(2) / 2;
 
@@ -41,27 +41,44 @@ const octoTankStacking = () => {
   if (!isOctoTankStacking) return clearInterval(interval);
 
   interval = setInterval(() => {
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    let clientX, clientY;
 
-    const diffX = mouseX - centerX;
-    const diffY = mouseY - centerY;
+    if (boolean) {
+      const centerX = canvas.width / 2;
+      const centerY = canvas.height / 2;
 
-    const clientX = SIN_45_DEGREES * (diffX - diffY) + centerX;
-    const clientY = SIN_45_DEGREES * (diffX + diffY) + centerY;
+      const diffX = mouseX - centerX;
+      const diffY = mouseY - centerY;
+
+      clientX = SIN_45_DEGREES * (diffX - diffY) + centerX;
+      clientY = SIN_45_DEGREES * (diffX + diffY) + centerY;
+    } else {
+      clientX = mouseX;
+      clientY = mouseY;
+    }
 
     isArtificialMouseMove = true;
     canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
     isArtificialMouseMove = false;
+
+    boolean = !boolean;
   }, 300 - 20 * tanksInfo.octoTank.bulletReload);
 };
 
 const onMouseMove = (e) => {
-  // TODO Improve mouse control
-  if (isOctoTankStacking && !isArtificialMouseMove) return e.stopPropagation();
+  if (isOctoTankStacking) {
+    if (!isArtificialMouseMove) {
+      e.stopPropagation();
 
-  mouseX = e.clientX;
-  mouseY = e.clientY;
+      if (boolean) {
+        mouseX = e.clientX;
+        mouseY = e.clientY;
+      }
+    }
+  } else {
+    mouseX = e.clientX;
+    mouseY = e.clientY;
+  }
 };
 
 const onKeyUp = (e) => {
@@ -75,6 +92,7 @@ const start = () => {
   mouseX = 0;
   mouseY = 0;
   interval = 0;
+  boolean = true;
   isOctoTankStacking = false;
   isArtificialMouseMove = false;
 
