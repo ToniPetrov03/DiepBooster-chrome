@@ -32,7 +32,7 @@ keyInputs.forEach(input => {
   input.addEventListener('keydown', (e) => {
     e.preventDefault();
 
-    input.value = e.code;
+    input.value = e.key;
 
     responseWidth(keyInputs);
     onChange(e);
