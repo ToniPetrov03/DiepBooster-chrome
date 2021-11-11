@@ -19,16 +19,18 @@ const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
 const predatorStacking = () => {
+  const k = (15 - tanksInfo.predator.bulletReload) * 12.5;
+
   const fire = (t, w) => {
-    setTimeout(spaceDown, t * 1000);
-    setTimeout(spaceUp, t * 1000 + w);
+    setTimeout(spaceDown, t);
+    setTimeout(spaceUp, t + w);
   };
 
-  fire(0, 100);
-  fire(0.75, 200);
-  fire(1.5, 750);
+  fire(0, k);
+  fire(k * 7.5, k * 2);
+  fire(k * 15, 0);
 
-  setTimeout(pressE, 2000);
+  setTimeout(pressE, k * 15);
 };
 
 const artificialMouseMove = (x = 0) => {
