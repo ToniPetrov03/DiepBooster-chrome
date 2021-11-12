@@ -1,5 +1,7 @@
 let mouseX, mouseY, frameRequest, isOctoTankStacking, isArtificialMouseMove;
 
+const Angle_45_Degrees = Math.PI * 45 / 180;
+
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('a');
 const config = { attributes: true, attributeFilter: ['style'] };
@@ -18,8 +20,17 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
+const reloadSpeedMs = (tank) => {
+  const reloadStep = {
+    octoTank: 20,
+    predator: 120,
+  };
+
+  return (15 - tanksInfo[tank].bulletReload) * reloadStep[tank];
+}
+
 const predatorStacking = () => {
-  const k = (15 - tanksInfo.predator.bulletReload) * 12.5;
+  const k = reloadSpeedMs('predator') / 9.6;
 
   const fire = (t, w) => {
     setTimeout(spaceDown, t);
@@ -34,8 +45,7 @@ const predatorStacking = () => {
 };
 
 const artificialMouseMove = (x = 0) => {
-  const state = Math.floor(x * 0.00625) % 2;
-  const angle = Math.PI * 45 / 180 * state;
+  const angle = Math.floor(x / reloadSpeedMs('octoTank')) % 2 ? Angle_45_Degrees : 0;
 
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
