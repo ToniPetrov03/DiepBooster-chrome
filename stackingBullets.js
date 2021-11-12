@@ -91,9 +91,9 @@ const onMouseMove = (e) => {
 };
 
 const onKeyUp = (e) => {
-  switch (e.key) {
-    case tanksInfo.predator.key: predatorStacking(); break;
-    case tanksInfo.octoTank.key: octoTankStacking(); break;
+  switch (e.code) {
+    case tanksInfo.predator.keyCode: predatorStacking(); break;
+    case tanksInfo.octoTank.keyCode: octoTankStacking(); break;
   }
 };
 
