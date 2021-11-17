@@ -1,10 +1,11 @@
-let mouseX, mouseY, frameRequest, isOctoTankStacking, isArtificialMouseMove;
+let mouseX, mouseY, frameRequest, octoTankReloadMs, isOctoTankStacking, isArtificialMouseMove;
 
 const Angle_45_Degrees = Math.PI * 45 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('a');
 const config = { attributes: true, attributeFilter: ['style'] };
+const reloadStep = { octoTank: 20, predator: 120 };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -20,14 +21,7 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
-const reloadSpeedMs = (tank) => {
-  const reloadStep = {
-    octoTank: 20,
-    predator: 120,
-  };
-
-  return (15 - tanksInfo[tank].bulletReload) * reloadStep[tank];
-}
+const reloadSpeedMs = (tank) => (15 - tanksInfo[tank].bulletReload) * reloadStep[tank];
 
 const predatorStacking = () => {
   const k = reloadSpeedMs('predator') / 9.6;
@@ -44,8 +38,8 @@ const predatorStacking = () => {
   setTimeout(pressE, k * 15);
 };
 
-const artificialMouseMove = (x = 0) => {
-  const angle = Math.floor(x / reloadSpeedMs('octoTank')) % 2 ? Angle_45_Degrees : 0;
+const artificialMouseMove = (x) => {
+  const angle = Math.floor(x / octoTankReloadMs) % 2 ? Angle_45_Degrees : 0;
 
   const centerX = canvas.width / 2;
   const centerY = canvas.height / 2;
@@ -71,9 +65,12 @@ const octoTankStacking = () => {
 
   isOctoTankStacking = !isOctoTankStacking;
 
-  isOctoTankStacking ?
-    artificialMouseMove() :
+  if (isOctoTankStacking) {
+    octoTankReloadMs = reloadSpeedMs('octoTank');
+    artificialMouseMove(0);
+  } else {
     window.cancelAnimationFrame(frameRequest);
+  }
 };
 
 const onMouseMove = (e) => {
@@ -101,6 +98,7 @@ const start = () => {
   mouseX = 0;
   mouseY = 0;
   frameRequest = 0;
+  octoTankReloadMs = 0;
   isOctoTankStacking = false;
   isArtificialMouseMove = false;
 
