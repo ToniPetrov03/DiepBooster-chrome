@@ -1,6 +1,7 @@
 body {
     color: white;
-    background-color: black;
+    background-color: #282A35;
+    width: 240px;
 }
 
 .header {
@@ -32,5 +33,31 @@ td, th {
 }
 
 input {
+    cursor: pointer;
     text-align: center;
+}
+
+select {
+    cursor: pointer;
+}
+
+.donate {
+    display: flex;
+    padding: 4px;
+    align-items: center;
+}
+
+.donateText {
+    display: flex;
+}
+
+.donateBtn {
+    display: flex;
+    margin-left: auto;
+}
+
+.imgHeart {
+    padding-left: 2px;
+    height: 16px;
+    width: auto;
 }

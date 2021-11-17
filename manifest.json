@@ -9,8 +9,7 @@
       ],
       "js": [
         "chromeStorage.js",
-        "stackingBullets.js",
-        "styling.js"
+        "stackingBullets.js"
       ]
     }
   ],

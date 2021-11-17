@@ -1,11 +1,5 @@
-const [...keyInputs] = document.getElementsByTagName('input');
+const [...keyInputs] = document.querySelectorAll('input[spellcheck]');
 const [...reloadSelects] = document.getElementsByTagName('select');
-
-const responseWidth = (elements) => {
-  const width = elements.reduce((acc, el) => Math.max(el.value.length, acc), 0) + 1 + 'ch';
-
-  elements.forEach(el => el.style.width = width);
-};
 
 chrome.storage.local.get((result) => {
   [...keyInputs, ...reloadSelects].forEach(el => {
@@ -13,8 +7,6 @@ chrome.storage.local.get((result) => {
 
     el.value = result[tank][prop];
   });
-
-  responseWidth(keyInputs);
 });
 
 const onChange = (e) => {
@@ -34,7 +26,6 @@ keyInputs.forEach(input => {
 
     input.value = e.code;
 
-    responseWidth(keyInputs);
     onChange(e);
   });
 });
