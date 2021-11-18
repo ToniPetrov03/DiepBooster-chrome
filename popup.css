@@ -2,6 +2,7 @@ body {
     color: white;
     background-color: #282A35;
     width: 240px;
+    cursor: default;
 }
 
 .header {
@@ -33,7 +34,6 @@ td, th {
 }
 
 input {
-    cursor: pointer;
     text-align: center;
 }
 

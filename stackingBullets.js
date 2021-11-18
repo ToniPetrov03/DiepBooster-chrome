@@ -41,11 +41,11 @@ const predatorStacking = () => {
 const artificialMouseMove = (x) => {
   const angle = Math.floor(x / octoTankReloadMs) % 2 ? Angle_45_Degrees : 0;
 
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-
   const sin = Math.sin(angle);
   const cos = Math.cos(angle);
+
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
 
   const diffX = mouseX - centerX;
   const diffY = mouseY - centerY;

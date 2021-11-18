@@ -1,7 +1,7 @@
 {
   "name": "DiepBooster",
   "version": "1.0",
-  "description": "Auto stack the bullets of Predator and Octo tank!",
+  "description": "Auto stack the bullets of Predator and Octo tank in any reload speed!",
   "content_scripts": [
     {
       "matches": [
