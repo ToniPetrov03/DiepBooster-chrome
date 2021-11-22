@@ -3,8 +3,8 @@ let mouseX, mouseY, frameRequest, octoTankReloadMs, isOctoTankStacking, isArtifi
 const Angle_45_Degrees = Math.PI * 45 / 180;
 
 const canvas = document.getElementById('canvas');
-const target = document.getElementById('a');
-const config = { attributes: true, attributeFilter: ['style'] };
+const target = document.getElementById('aa_main');
+const config = { attributes: true, attributeFilter: ['class'] };
 const reloadStep = { octoTank: 20, predator: 120 };
 
 const initKeyEvent = (keyCode, ...events) => {
@@ -112,9 +112,9 @@ const stop = () => {
   document.removeEventListener('mousemove', onMouseMove, true);
 };
 
-const display = {
-  none: start,
-  block: stop,
+const scriptSwitch = {
+  'aa_holder': start,
+  'aa_holder active': stop,
 };
 
-new MutationObserver(() => display[target.style.display]()).observe(target, config);
+new MutationObserver(() => scriptSwitch[target.className]()).observe(target, config);
