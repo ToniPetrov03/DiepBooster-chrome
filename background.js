@@ -21,7 +21,7 @@ chrome.runtime.onInstalled.addListener(() => {
     },
     triangle: {
       bulletReload: 7,
-      keyCode: 'KeyC',
+      keyCode: 'KeyQ',
     },
   });
 });

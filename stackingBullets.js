@@ -41,8 +41,6 @@ const predatorStacking = () => {
 };
 
 const artificialMouseMove = (reloadMs, rotationAngle) => {
-  pressE();
-
   isTankStacking = !isTankStacking;
 
   if (!isTankStacking) {
