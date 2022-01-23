@@ -1,11 +1,13 @@
-let mouseX, mouseY, frameRequest, octoTankReloadMs, isOctoTankStacking, isArtificialMouseMove;
+let mouseX, mouseY, frameRequest, isTankStacking, isArtificialMouseMove;
 
 const Angle_45_Degrees = Math.PI * 45 / 180;
+const Angle_90_Degrees = Math.PI * 90 / 180;
+const Angle_135_Degrees = Math.PI * 135 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('aa_main');
 const config = { attributes: true, attributeFilter: ['class'] };
-const reloadStep = { octoTank: 20, predator: 120 };
+const reloadStep = { octoTank: 20, fighter: 20, triangle: 20, predator: 120 };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -38,43 +40,42 @@ const predatorStacking = () => {
   setTimeout(pressE, k * 15);
 };
 
-const artificialMouseMove = (x) => {
-  const angle = Math.floor(x / octoTankReloadMs) % 2 ? Angle_45_Degrees : 0;
-
-  const sin = Math.sin(angle);
-  const cos = Math.cos(angle);
-
-  const centerX = canvas.width / 2;
-  const centerY = canvas.height / 2;
-
-  const diffX = mouseX - centerX;
-  const diffY = mouseY - centerY;
-
-  const clientX = cos * diffX - sin * diffY + centerX;
-  const clientY = sin * diffX + cos * diffY + centerY;
-
-  isArtificialMouseMove = true;
-  canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
-  isArtificialMouseMove = false;
-
-  frameRequest = window.requestAnimationFrame(artificialMouseMove);
-};
-
-const octoTankStacking = () => {
+const artificialMouseMove = (reloadMs, rotationAngle) => {
   pressE();
 
-  isOctoTankStacking = !isOctoTankStacking;
+  isTankStacking = !isTankStacking;
 
-  if (isOctoTankStacking) {
-    octoTankReloadMs = reloadSpeedMs('octoTank');
-    artificialMouseMove(0);
-  } else {
-    window.cancelAnimationFrame(frameRequest);
+  if (!isTankStacking) {
+    return window.cancelAnimationFrame(frameRequest);
   }
+
+  const movement = (x) => {
+    const angle = Math.floor(x / reloadMs) % 2 ? rotationAngle : 0;
+
+    const sin = Math.sin(angle);
+    const cos = Math.cos(angle);
+
+    const centerX = canvas.width / 2;
+    const centerY = canvas.height / 2;
+
+    const diffX = mouseX - centerX;
+    const diffY = mouseY - centerY;
+
+    const clientX = cos * diffX - sin * diffY + centerX;
+    const clientY = sin * diffX + cos * diffY + centerY;
+
+    isArtificialMouseMove = true;
+    canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
+    isArtificialMouseMove = false;
+
+    frameRequest = window.requestAnimationFrame(movement);
+  };
+
+  movement(0);
 };
 
 const onMouseMove = (e) => {
-  if (isOctoTankStacking) {
+  if (isTankStacking) {
     if (!isArtificialMouseMove) {
       e.stopPropagation();
 
@@ -90,7 +91,9 @@ const onMouseMove = (e) => {
 const onKeyUp = (e) => {
   switch (e.code) {
     case tanksInfo.predator.keyCode: predatorStacking(); break;
-    case tanksInfo.octoTank.keyCode: octoTankStacking(); break;
+    case tanksInfo.fighter.keyCode: artificialMouseMove(reloadSpeedMs('fighter'), Angle_90_Degrees); break;
+    case tanksInfo.octoTank.keyCode: artificialMouseMove(reloadSpeedMs('octoTank'), Angle_45_Degrees); break;
+    case tanksInfo.triangle.keyCode: artificialMouseMove(reloadSpeedMs('triangle'), Angle_135_Degrees); break;
   }
 };
 
@@ -98,8 +101,7 @@ const start = () => {
   mouseX = 0;
   mouseY = 0;
   frameRequest = 0;
-  octoTankReloadMs = 0;
-  isOctoTankStacking = false;
+  isTankStacking = false;
   isArtificialMouseMove = false;
 
   document.addEventListener('keyup', onKeyUp);
