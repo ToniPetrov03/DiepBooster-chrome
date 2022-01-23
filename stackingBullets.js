@@ -1,13 +1,12 @@
 let mouseX, mouseY, frameRequest, isTankStacking, isArtificialMouseMove;
 
 const Angle_45_Degrees = Math.PI * 45 / 180;
-const Angle_90_Degrees = Math.PI * 90 / 180;
 const Angle_135_Degrees = Math.PI * 135 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('aa_main');
 const config = { attributes: true, attributeFilter: ['class'] };
-const reloadStep = { octoTank: 20, fighter: 20, triangle: 20, predator: 120 };
+const reloadStep = { octoTank: 20, triangle: 20, predator: 120 };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -69,7 +68,7 @@ const artificialMouseMove = (reloadMs, rotationAngle) => {
     frameRequest = window.requestAnimationFrame(movement);
   };
 
-  movement(0);
+  movement(1);
 };
 
 const onMouseMove = (e) => {
@@ -89,7 +88,6 @@ const onMouseMove = (e) => {
 const onKeyUp = (e) => {
   switch (e.code) {
     case tanksInfo.predator.keyCode: predatorStacking(); break;
-    case tanksInfo.fighter.keyCode: artificialMouseMove(reloadSpeedMs('fighter'), Angle_90_Degrees); break;
     case tanksInfo.octoTank.keyCode: artificialMouseMove(reloadSpeedMs('octoTank'), Angle_45_Degrees); break;
     case tanksInfo.triangle.keyCode: artificialMouseMove(reloadSpeedMs('triangle'), Angle_135_Degrees); break;
   }

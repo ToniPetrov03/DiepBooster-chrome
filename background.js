@@ -15,10 +15,6 @@ chrome.runtime.onInstalled.addListener(() => {
       bulletReload: 7,
       keyCode: 'KeyV',
     },
-    fighter: {
-      bulletReload: 7,
-      keyCode: 'KeyF',
-    },
     triangle: {
       bulletReload: 7,
       keyCode: 'KeyQ',
