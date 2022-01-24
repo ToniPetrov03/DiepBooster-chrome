@@ -10,10 +10,12 @@ chrome.runtime.onInstalled.addListener(() => {
     predator: {
       bulletReload: 7,
       keyCode: 'KeyF',
+      reloadSpeedMs: 960,
     },
     group135: {
       bulletReload: 7,
       keyCode: 'KeyQ',
+      reloadSpeedMs: 160,
     },
   });
 });

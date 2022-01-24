@@ -1,3 +1,5 @@
+const reloadStep = { predator: 120, group135: 20 };
+
 const [...keyInputs] = document.querySelectorAll('input[spellcheck]');
 const [...reloadSelects] = document.getElementsByTagName('select');
 
@@ -15,6 +17,7 @@ const onChange = (e) => {
 
   chrome.storage.local.get(tank, (result) => {
     result[tank][prop] = value;
+    result[tank].reloadSpeedMs = (15 - result[tank].bulletReload) * reloadStep[tank];
 
     chrome.storage.local.set(result);
   });
