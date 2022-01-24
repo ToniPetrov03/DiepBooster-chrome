@@ -1,12 +1,10 @@
 let mouseX, mouseY, frameRequest, isTankStacking, isArtificialMouseMove;
 
-const Angle_45_Degrees = Math.PI * 45 / 180;
 const Angle_135_Degrees = Math.PI * 135 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('aa_main');
 const config = { attributes: true, attributeFilter: ['class'] };
-const reloadStep = { octoTank: 20, triangle: 20, predator: 120 };
 
 const initKeyEvent = (keyCode, ...events) => {
   const eventInitDict = {
@@ -22,10 +20,8 @@ const pressE = initKeyEvent(69, 'keydown', 'keyup');
 const spaceDown = initKeyEvent(32, 'keydown');
 const spaceUp = initKeyEvent(32, 'keyup');
 
-const reloadSpeedMs = (tank) => (15 - tanksInfo[tank].bulletReload) * reloadStep[tank];
-
-const predatorStacking = () => {
-  const k = reloadSpeedMs('predator') / 9.6;
+const predatorStacking = (reloadSpeedMs) => {
+  const k = reloadSpeedMs / 9.6;
 
   const fire = (t, w) => {
     setTimeout(spaceDown, t);
@@ -39,15 +35,15 @@ const predatorStacking = () => {
   setTimeout(pressE, k * 15);
 };
 
-const artificialMouseMove = (reloadMs, rotationAngle) => {
+const group135Stacking = (reloadSpeedMs) => {
   isTankStacking = !isTankStacking;
 
   if (!isTankStacking) {
     return window.cancelAnimationFrame(frameRequest);
   }
 
-  const movement = (x) => {
-    const angle = Math.floor(x / reloadMs) % 2 ? rotationAngle : 0;
+  const artificialMouseMove = (x) => {
+    const angle = Math.floor(x / reloadSpeedMs) % 2 ? Angle_135_Degrees : 0;
 
     const sin = Math.sin(angle);
     const cos = Math.cos(angle);
@@ -65,10 +61,10 @@ const artificialMouseMove = (reloadMs, rotationAngle) => {
     canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
     isArtificialMouseMove = false;
 
-    frameRequest = window.requestAnimationFrame(movement);
+    frameRequest = window.requestAnimationFrame(artificialMouseMove);
   };
 
-  movement(1);
+  artificialMouseMove();
 };
 
 const onMouseMove = (e) => {
@@ -87,9 +83,8 @@ const onMouseMove = (e) => {
 
 const onKeyUp = (e) => {
   switch (e.code) {
-    case tanksInfo.predator.keyCode: predatorStacking(); break;
-    case tanksInfo.octoTank.keyCode: artificialMouseMove(reloadSpeedMs('octoTank'), Angle_45_Degrees); break;
-    case tanksInfo.triangle.keyCode: artificialMouseMove(reloadSpeedMs('triangle'), Angle_135_Degrees); break;
+    case tanksInfo.predator.keyCode: predatorStacking(tanksInfo.predator.reloadSpeedMs); break;
+    case tanksInfo.group135.keyCode: group135Stacking(tanksInfo.group135.reloadSpeedMs); break;
   }
 };
 

@@ -9,13 +9,9 @@ chrome.runtime.onInstalled.addListener(() => {
   chrome.storage.local.set({
     predator: {
       bulletReload: 7,
-      keyCode: 'KeyX',
+      keyCode: 'KeyF',
     },
-    octoTank: {
-      bulletReload: 7,
-      keyCode: 'KeyV',
-    },
-    triangle: {
+    group135: {
       bulletReload: 7,
       keyCode: 'KeyQ',
     },
