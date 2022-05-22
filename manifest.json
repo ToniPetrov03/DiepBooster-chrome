@@ -18,12 +18,9 @@
     "storage"
   ],
   "background": {
-    "scripts": [
-      "background.js"
-    ],
-    "persistent": false
+    "service_worker": "background.js"
   },
-  "page_action": {
+  "action": {
     "default_popup": "popup.html",
     "default_icon": {
       "16": "images/booster16.png",
@@ -38,5 +35,5 @@
     "48": "images/booster48.png",
     "128": "images/booster128.png"
   },
-  "manifest_version": 2
+  "manifest_version": 3
 }
