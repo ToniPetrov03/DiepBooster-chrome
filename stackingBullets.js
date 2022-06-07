@@ -5,6 +5,7 @@ const Angle_135_Degrees = PI * 135 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('aa_main');
+const reloadStep = { predator: 120, fighter: 20, octo: 20 };
 const config = { attributes: true, attributeFilter: ['class'] };
 
 const initKeyEvent = (keyCode, ...events) => {
@@ -82,11 +83,13 @@ const onMouseMove = (e) => {
   }
 };
 
+const reloadSpeedMs = (tank) => (15 - tanksInfo[tank].bulletReload) * reloadStep[tank];
+
 const onKeyUp = (e) => {
   switch (e.code) {
-    case tanksInfo.octo.keyCode: group135Stacking(tanksInfo.octo.reloadSpeedMs); break;
-    case tanksInfo.triangle.keyCode: group135Stacking(tanksInfo.triangle.reloadSpeedMs); break;
-    case tanksInfo.predator.keyCode: predatorStacking(tanksInfo.predator.reloadSpeedMs); break;
+    case tanksInfo.octo.keyCode: group135Stacking(reloadSpeedMs('octo')); break;
+    case tanksInfo.fighter.keyCode: group135Stacking(reloadSpeedMs('fighter')); break;
+    case tanksInfo.predator.keyCode: predatorStacking(reloadSpeedMs('predator')); break;
   }
 };
 

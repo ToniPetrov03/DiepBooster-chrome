@@ -1,36 +1,59 @@
-const reloadStep = { predator: 120, group135: 20 };
+const table = document.querySelector('table');
 
-const [...keyInputs] = document.querySelectorAll('input[spellcheck]');
-const [...reloadSelects] = document.getElementsByTagName('select');
+const TableElement = (tank, bulletReload, keyCode) => {
+  const createTh = () => document.createElement('th');
+  const th1 = createTh();
+  const th2 = createTh();
+  const th3 = createTh();
+  const tr = document.createElement('tr');
+  const select = document.createElement('select');
+  const input = document.createElement('input');
 
-chrome.storage.local.get((result) => {
-  [...keyInputs, ...reloadSelects].forEach(el => {
-    const [tank, prop] = el.id.split('-');
+  select.innerHTML = `
+<option value="0">0</option>
+<option value="1">1</option>
+<option value="2">2</option>
+<option value="3">3</option>
+<option value="4">4</option>
+<option value="5">5</option>
+<option value="6">6</option>
+<option value="7">7</option>
+`;
+  select.value = bulletReload;
 
-    el.value = result[tank][prop];
-  });
-});
+  input.size = 4;
+  input.spellcheck = false;
+  input.value = keyCode;
 
-const onChange = (e) => {
-  const { id, value } = e.target;
-  const [tank, prop] = id.split('-');
+  th1.textContent = tank.charAt(0).toUpperCase() + tank.slice(1);
+  th2.appendChild(select)
+  th3.appendChild(input);
+  tr.appendChild(th1);
+  tr.appendChild(th2);
+  tr.appendChild(th3);
 
-  chrome.storage.local.get(tank, (result) => {
-    result[tank][prop] = value;
-    result[tank].reloadSpeedMs = (15 - result[tank].bulletReload) * reloadStep[tank];
+  const updateStorage = () =>
+    chrome.storage.local.set({
+      [tank]: {
+        keyCode: input.value,
+        bulletReload: select.value,
+      }
+    });
 
-    chrome.storage.local.set(result);
-  });
-};
-
-keyInputs.forEach(input => {
-  input.addEventListener('keydown', (e) => {
+  select.onchange = updateStorage;
+  input.onkeydown = (e) => {
     e.preventDefault();
 
     input.value = e.code;
 
-    onChange(e);
-  });
-});
+    updateStorage()
+  }
 
-reloadSelects.forEach(select => select.addEventListener('change', onChange));
+  return tr;
+}
+
+chrome.storage.local.get((result) => {
+  for (const tank in result) {
+    table.appendChild(TableElement(tank, result[tank].bulletReload, result[tank].keyCode));
+  }
+});

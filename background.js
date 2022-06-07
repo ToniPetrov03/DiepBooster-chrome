@@ -10,17 +10,14 @@ chrome.runtime.onInstalled.addListener(() => {
     octo: {
       bulletReload: 7,
       keyCode: 'KeyQ',
-      reloadSpeedMs: 160,
+    },
+    fighter: {
+      bulletReload: 7,
+      keyCode: 'KeyZ',
     },
     predator: {
       bulletReload: 7,
       keyCode: 'KeyF',
-      reloadSpeedMs: 960,
-    },
-    triangle: {
-      bulletReload: 7,
-      keyCode: 'ShiftLeft',
-      reloadSpeedMs: 160,
     },
   });
 });
