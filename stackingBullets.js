@@ -1,6 +1,7 @@
 let mouseX, mouseY, frameRequest, isTankStacking, isArtificialMouseMove;
 
-const Angle_135_Degrees = Math.PI * 135 / 180;
+const { PI, sin, cos } = Math;
+const Angle_135_Degrees = PI * 135 / 180;
 
 const canvas = document.getElementById('canvas');
 const target = document.getElementById('aa_main');
@@ -42,20 +43,20 @@ const group135Stacking = (reloadSpeedMs) => {
     return window.cancelAnimationFrame(frameRequest);
   }
 
+  const centerX = canvas.width / 2;
+  const centerY = canvas.height / 2;
+
   const artificialMouseMove = (x) => {
-    const angle = Math.floor(x / reloadSpeedMs) % 2 ? Angle_135_Degrees : 0;
+    const angle = ((x / reloadSpeedMs) >> 0) % 2 ? Angle_135_Degrees : 0;
 
-    const sin = Math.sin(angle);
-    const cos = Math.cos(angle);
-
-    const centerX = canvas.width / 2;
-    const centerY = canvas.height / 2;
+    const sine = sin(angle);
+    const cosine = cos(angle);
 
     const diffX = mouseX - centerX;
     const diffY = mouseY - centerY;
 
-    const clientX = cos * diffX - sin * diffY + centerX;
-    const clientY = sin * diffX + cos * diffY + centerY;
+    const clientX = cosine * diffX - sine * diffY + centerX;
+    const clientY = sine * diffX + cosine * diffY + centerY;
 
     isArtificialMouseMove = true;
     canvas.dispatchEvent(new MouseEvent('mousemove', { clientX, clientY }));
@@ -83,8 +84,9 @@ const onMouseMove = (e) => {
 
 const onKeyUp = (e) => {
   switch (e.code) {
+    case tanksInfo.octo.keyCode: group135Stacking(tanksInfo.octo.reloadSpeedMs); break;
+    case tanksInfo.triangle.keyCode: group135Stacking(tanksInfo.triangle.reloadSpeedMs); break;
     case tanksInfo.predator.keyCode: predatorStacking(tanksInfo.predator.reloadSpeedMs); break;
-    case tanksInfo.group135.keyCode: group135Stacking(tanksInfo.group135.reloadSpeedMs); break;
   }
 };
 

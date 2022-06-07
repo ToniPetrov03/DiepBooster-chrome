@@ -7,14 +7,19 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   chrome.storage.local.set({
+    octo: {
+      bulletReload: 7,
+      keyCode: 'KeyQ',
+      reloadSpeedMs: 160,
+    },
     predator: {
       bulletReload: 7,
       keyCode: 'KeyF',
       reloadSpeedMs: 960,
     },
-    group135: {
+    triangle: {
       bulletReload: 7,
-      keyCode: 'KeyQ',
+      keyCode: 'ShiftLeft',
       reloadSpeedMs: 160,
     },
   });
