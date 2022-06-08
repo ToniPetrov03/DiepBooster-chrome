@@ -8,8 +8,13 @@
         "https://diep.io/*"
       ],
       "js": [
-        "chromeStorage.js",
-        "stackingBullets.js"
+        "constants.js",
+        "keyEvents.js",
+        "predatorStacking.js",
+        "group135DegreesStacking.js",
+        "updateTanksInfo.js",
+        "stackingBulletsControls.js",
+        "scriptSwitcher.js"
       ]
     }
   ],
