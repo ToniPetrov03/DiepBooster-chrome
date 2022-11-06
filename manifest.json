@@ -1,32 +1,26 @@
 {
   "name": "DiepBooster",
-  "version": "1.0",
+  "version": "1.1.0",
   "description": "Auto stack the bullets in any reload speed!",
   "content_scripts": [
     {
-      "matches": [
-        "https://diep.io/*"
-      ],
-      "js": [
-        "constants.js",
-        "keyEvents.js",
-        "predatorStacking.js",
-        "group135DegreesStacking.js",
-        "updateTanksInfo.js",
-        "stackingBulletsControls.js",
-        "scriptSwitcher.js"
-      ]
+      "js": ["content.js"],
+      "matches": ["https://diep.io/*"]
     }
   ],
+  "web_accessible_resources": [{
+    "resources": ["storageService.js", "scripts/*"],
+    "matches": ["https://diep.io/*"]
+  }],
   "permissions": [
-    "declarativeContent",
-    "storage"
+    "storage",
+    "declarativeContent"
   ],
   "background": {
     "service_worker": "background.js"
   },
   "action": {
-    "default_popup": "popup.html",
+    "default_popup": "popup/popup.html",
     "default_icon": {
       "16": "images/booster16.png",
       "32": "images/booster32.png",

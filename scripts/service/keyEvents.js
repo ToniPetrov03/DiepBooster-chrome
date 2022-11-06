@@ -8,6 +8,6 @@ const initKeyEvent = (keyCode, ...events) => {
   return () => events.forEach((event) => window.dispatchEvent(new KeyboardEvent(event, eventInitDict)));
 };
 
-const pressE = initKeyEvent(69, 'keydown', 'keyup');
-const spaceDown = initKeyEvent(32, 'keydown');
-const spaceUp = initKeyEvent(32, 'keyup');
+export const spaceUp = initKeyEvent(32, 'keyup');
+export const spaceDown = initKeyEvent(32, 'keydown');
+export const pressE = initKeyEvent(69, 'keydown', 'keyup');

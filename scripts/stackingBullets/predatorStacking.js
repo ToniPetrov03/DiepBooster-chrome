@@ -1,5 +1,7 @@
-const predatorStacking = (reloadSpeedMs) => {
-  const k = reloadSpeedMs / 9.6;
+import { spaceDown, spaceUp, pressE } from '../service/keyEvents.js'
+
+const predatorStacking = (reloadSpeed) => {
+  const k = reloadSpeed / 9.6;
 
   const fire = (t, w) => {
     setTimeout(spaceDown, t);
@@ -12,3 +14,5 @@ const predatorStacking = (reloadSpeedMs) => {
 
   setTimeout(pressE, k * 15);
 };
+
+export default predatorStacking;

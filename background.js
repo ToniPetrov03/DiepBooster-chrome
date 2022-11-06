@@ -7,15 +7,15 @@ chrome.runtime.onInstalled.addListener(() => {
   });
 
   chrome.storage.local.set({
-    octo: {
+    OCTO: {
       bulletReload: 7,
       keyCode: 'KeyQ',
     },
-    fighter: {
+    FIGHTER: {
       bulletReload: 7,
       keyCode: 'KeyZ',
     },
-    predator: {
+    PREDATOR: {
       bulletReload: 7,
       keyCode: 'KeyF',
     },
