@@ -1,4 +1,4 @@
-import { c } from '../../../create/createElement.js'
+import c from '../../../create/createElement.js'
 
 const headerStyles = `
   display: flex;
@@ -8,10 +8,14 @@ const headerStyles = `
   font-family: 'Trebuchet MS', sans-serif;
 `;
 
+const imageStyles = `
+  image-rendering: pixelated;
+`;
+
 const Header = (
   c('div', { s: headerStyles },
-    c('img', { src: '../../images/booster32.png', alt: 'logo' }),
-    c('h2', { t: 'DiepBooster'}),
+    c('img', { s: imageStyles, src: '../../images/booster32.png', alt: 'logo' }),
+    c('h2', { t: 'DiepBooster' }),
   )
 );
 

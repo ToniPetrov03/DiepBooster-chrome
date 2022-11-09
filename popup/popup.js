@@ -1,17 +1,15 @@
-import { c } from '../create/createElement.js';
+import c from '../create/createElement.js';
 
-import Table from './components/Table/Table.js';
 import Header from './components/Header/Header.js';
+import Table from './components/Table/Table.js';
 
 const body = document.querySelector('body');
 
-(async () => {
-  const container = (
-    c('div', {},
-      Header,
-      await Table,
-    )
-  );
+const container = (
+  c('div', {},
+    Header,
+    Table,
+  )()
+);
 
-  body.appendChild(container);
-})();
+body.appendChild(container);

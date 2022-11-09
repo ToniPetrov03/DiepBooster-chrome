@@ -1,4 +1,6 @@
-import { c } from '../../../create/createElement.js';
+import c from '../../../create/createElement.js';
+
+import { storage } from '../../../storageService.js';
 
 import TableItem from './TableItem.js';
 
@@ -20,8 +22,10 @@ const tableItemStyles = `
   background-color: black;
 `;
 
-const Table = (async () =>
-  c('div', {},
+const Table = (async () => {
+  await storage;
+
+  return (
     c('table', { s: tableStyles },
       c('thead', {},
         c('tr', {},
@@ -34,12 +38,12 @@ const Table = (async () =>
           c('th', { t: 'RELOAD', s: tableItemStyles }),
           c('th', { t: 'KEYCODE', s: tableItemStyles }),
         ),
-        await TableItem('OCTO'),
-        await TableItem('FIGHTER'),
-        await TableItem('PREDATOR'),
+        TableItem('OCTO', storage),
+        TableItem('FIGHTER', storage),
+        TableItem('PREDATOR', storage),
       ),
-    ),
+    )
   )
-)();
+})();
 
 export default Table;

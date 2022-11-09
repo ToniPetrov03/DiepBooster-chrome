@@ -4,4 +4,4 @@ const PROPS_ALIAS = {
   t: 'textContent',
 };
 
-export default PROPS_ALIAS
+export default PROPS_ALIAS;

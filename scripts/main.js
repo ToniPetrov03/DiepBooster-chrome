@@ -48,7 +48,7 @@ const start = () => {
 const stop = () => {
   window.cancelAnimationFrame(state.frameRequest);
   document.removeEventListener('keyup', onKeyUp);
-  document.removeEventListener('mousemove', onMouseMove, true);
+  document.removeEventListener('mousemove', onMouseMove, { capture: true, passive: false });
 };
 
 scriptsSwitch(start, stop);

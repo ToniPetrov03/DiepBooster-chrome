@@ -1,15 +1,13 @@
-import { c } from '../../../create/createElement.js';
+import c from '../../../create/createElement.js';
 
-import { storage, setStorage } from '../../../storageService.js';
+import { setStorage } from '../../../storageService.js';
 
 const tableItemStyles = `
   padding: 8px;
   border: 1px solid #bbbbbb;
 `;
 
-const TableItem = async (tank) => {
-  await storage;
-
+const TableItem = (tank, storage) => {
   const { keyCode, bulletReload } = storage[tank];
 
   const onInputKeyDown = (e) => {
