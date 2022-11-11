@@ -8,13 +8,9 @@ const headerStyles = `
   font-family: 'Trebuchet MS', sans-serif;
 `;
 
-const imageStyles = `
-  image-rendering: pixelated;
-`;
-
 const Header = (
   c('div', { s: headerStyles },
-    c('img', { s: imageStyles, src: '../../images/booster32.png', alt: 'logo' }),
+    c('img', { src: '../../images/booster128.png', alt: 'logo', width: 32 }),
     c('h2', { t: 'DiepBooster' }),
   )
 );

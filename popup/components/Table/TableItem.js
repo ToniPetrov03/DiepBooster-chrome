@@ -7,6 +7,12 @@ const tableItemStyles = `
   border: 1px solid #bbbbbb;
 `;
 
+const inputStyles = `
+  cursor: pointer;
+  text-align: center;
+  caret-color: transparent;
+`;
+
 const TableItem = (tank, storage) => {
   const { keyCode, bulletReload } = storage[tank];
 
@@ -42,12 +48,12 @@ const TableItem = (tank, storage) => {
           ),
         ),
       ),
-      c('th', { style: tableItemStyles },
+      c('th', { s: tableItemStyles },
         c('input', {
           size: 9,
           v: keyCode,
+          s: inputStyles,
           spellcheck: false,
-          s: 'text-align: center',
           onkeydown: onInputKeyDown,
           },
         ),
