@@ -38,9 +38,9 @@ const Table = (async () => {
           c('th', { t: 'RELOAD', s: tableItemStyles }),
           c('th', { t: 'KEYCODE', s: tableItemStyles }),
         ),
+        TableItem('PREDATOR', storage),
         TableItem('OCTO', storage),
         TableItem('FIGHTER', storage),
-        TableItem('PREDATOR', storage),
       ),
     )
   )

@@ -15,7 +15,7 @@ const c = (tagName, props, ...children) => (
         element.appendChild(placeholder);
 
         child.then((component) => placeholder.replaceWith(component()));
-      } else {
+      } else if (typeof child === 'function') {
         element.appendChild(child());
       }
     }
