@@ -7,7 +7,7 @@ DiepBooster is an extension for the popular game [diep.io](https://diep.io), whi
 - **Changing bullet reload for the auto stacking feature.**
 - **Changing the key to turn on the auto stacking feature.**
 
-![](/images/popup.png =320x320)
+<img src="images/popup.png" alt="popup" width="320">
 
 ## Installation
 1. **[Download](https://github.com/ToniPetrov03/DiepBooster-chrome/archive/refs/heads/main.zip) folder DiepBooster**
