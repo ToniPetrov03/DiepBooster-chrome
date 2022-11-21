@@ -8,6 +8,7 @@ const tableItemStyles = `
 `;
 
 const inputStyles = `
+  width: 90%;
   cursor: pointer;
   text-align: center;
   caret-color: transparent;
@@ -50,7 +51,6 @@ const TableItem = (tank, storage) => {
       ),
       c('th', { s: tableItemStyles },
         c('input', {
-          size: 9,
           v: keyCode,
           s: inputStyles,
           spellcheck: false,
